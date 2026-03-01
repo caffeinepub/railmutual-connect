@@ -1,0 +1,43 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix Internet Identity auth flow, account initialization, and profile save permissions",
+  "requirements": [
+    {
+      "id": "REQ-3",
+      "summary": "Ensure the complete user flow works end-to-end: Internet Identity login → account initialization → profile save → dashboard. The frontend AuthPage must correctly handle the response from registerOrLogin and route the user to profile setup if incomplete, or to the dashboard if complete. The ProfilePage must successfully submit updates and redirect to the dashboard.",
+      "acceptanceCriteria": [
+        "Logging in via Internet Identity initializes the account and redirects to the correct page (profile setup or dashboard)",
+        "Submitting the profile form saves the data and navigates to the dashboard",
+        "Dashboard correctly loads and displays the authenticated user's profile stats and match count"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AuthPage.tsx",
+          "operation": "modify",
+          "description": "Fix the authentication flow to correctly handle the registerOrLogin response. Ensure that after successful login, the component awaits the backend registerOrLogin call, checks if the returned profile is complete (has all required fields like fullName), and routes to ProfilePage if incomplete or DashboardPage if complete. Add proper error handling for 'Failed to initialize your account' errors and display user-friendly error messages. Verify that the authorization component's authentication requirements are met before making backend calls."
+        },
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Fix the profile save flow to correctly call the backend updateProfile function and handle the response. Ensure form submission awaits the mutation, displays success feedback, invalidates the relevant React Query cache keys (currentUserProfile, dashboardStats), and navigates to the dashboard using the router. Add proper error handling for 'Failed to save profile' errors with user-friendly messages. Ensure the form validates required fields before submission and handles the contactVisible boolean correctly."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Ensure the dashboard correctly loads authenticated user data by calling getDashboardStats and getCallerUserProfile. Verify that loading states are handled properly and that the page displays the profile completion percentage and match count accurately. Add error boundaries to gracefully handle any backend errors. Ensure the component refetches data when navigating back from the profile page."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review and ensure all React Query hooks (useGetCallerUserProfile, useUpdateProfile, useGetDashboardStats) correctly invoke the backend actor methods. Verify that mutations properly invalidate dependent queries after successful updates. Ensure error handling wraps backend traps and surfaces them to the UI. Add query retry configuration to handle transient failures gracefully. Verify that the authorization component's usage instructions are followed for authenticated queries."
+        },
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Ensure the actor hook correctly initializes the authenticated actor with the Internet Identity principal after login. Verify that the actor is recreated when the identity changes and that dependent queries are invalidated. Add logging for debugging authentication state transitions. Ensure the hook properly handles the transition from anonymous to authenticated actor."
+        }
+      ]
+    }
+  ]
+}

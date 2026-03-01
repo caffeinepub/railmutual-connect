@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Project has authentication and profile issues. Fixing backend: Internet Identity auth flow, account initialization, profile save permissions, and full Signup→Login→Profile Save→Dashboard flow.",
+  "architectural_notes": [
+    "Authentication is Internet Identity only (passkeys, Google, Apple, Microsoft) — no email/password support on this platform"
+  ],
+  "known_issues": [
+    "Failed to initialize account on login (Internet Identity flow broken)",
+    "Failed to save profile (database permissions issue)"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-ensure-the-complete-user-flow-works-end-to-end-internet-identity-login-account-initialization-profile-save-dashboard-the-frontend-authpage-must-correctly-handle-the-response-from-registerorlogin-and-route-the-user-to-profile-setup-if-incomplete-or-to-the-dashboard-if-complete-the-profilepage-must-successfully-submit-updates-and-redirect-to-the-dashboard",
+      "title": "Ensure the complete user flow works end-to-end: Internet Identity login → account initialization → profile save → dashboard. The frontend AuthPage must correctly handle the response from `registerOrLogin` and route the user to profile setup if incomplete, or to the dashboard if complete. The ProfilePage must successfully submit updates and redirect to the dashboard.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Fix Internet Identity auth flow and account initialization on first login",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Fix database permissions so authenticated users can create and update their profile",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Ensure full flow works: Login → Profile Save → Dashboard",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Fix the backend Internet Identity authentication flow so that a user's account is correctly initialized on first login. The `registerOrLogin` function must reliably create a new user record when none exists for the caller's principal, and return the existing record on subsequent logins without throwing or returning an error variant.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Fix backend database permissions so that an authenticated user can create and update their own profile. The `saveProfile` (or equivalent update) function must correctly validate that the caller's principal matches the profile being written, and persist the changes to stable storage.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "RailMutual Connect",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

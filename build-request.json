@@ -1,0 +1,79 @@
+{
+  "kind": "build_request",
+  "title": "Fix Internet Identity auth flow, account initialization, and profile save permissions",
+  "projectName": "RailMutual Connect",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Fix the backend Internet Identity authentication flow so that a user's account is correctly initialized on first login. The `registerOrLogin` function must reliably create a new user record when none exists for the caller's principal, and return the existing record on subsequent logins without throwing or returning an error variant.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Failed to initialize your account",
+          "Fix backend only"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Calling `registerOrLogin` for a new principal creates a user record and returns it successfully",
+        "Calling `registerOrLogin` for an existing principal returns the existing record without error",
+        "No 'Failed to initialize your account' error appears in the frontend after login"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Fix backend database permissions so that an authenticated user can create and update their own profile. The `saveProfile` (or equivalent update) function must correctly validate that the caller's principal matches the profile being written, and persist the changes to stable storage.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Failed to save profile",
+          "Fix database permissions so profile saving works"
+        ]
+      },
+      "acceptanceCriteria": [
+        "An authenticated user can save their profile without receiving a permission or authorization error",
+        "Profile data persists across calls and is retrievable via `getProfile`",
+        "No 'Failed to save profile' error appears in the frontend after submitting the profile form"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Ensure the complete user flow works end-to-end: Internet Identity login → account initialization → profile save → dashboard. The frontend AuthPage must correctly handle the response from `registerOrLogin` and route the user to profile setup if incomplete, or to the dashboard if complete. The ProfilePage must successfully submit updates and redirect to the dashboard.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Test full flow: Signup → Login → Profile Save → Dashboard"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Logging in via Internet Identity initializes the account and redirects to the correct page (profile setup or dashboard)",
+        "Submitting the profile form saves the data and navigates to the dashboard",
+        "Dashboard correctly loads and displays the authenticated user's profile stats and match count"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the UI design or any frontend visual elements",
+    "Internet Identity must remain the sole authentication mechanism",
+    "Do not introduce email/password authentication",
+    "All Motoko logic must remain in backend/main.mo (single-actor architecture)"
+  ],
+  "nonGoals": [
+    "Email or password-based authentication",
+    "Any UI redesign or layout changes",
+    "New features beyond fixing the broken auth and profile save flow"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

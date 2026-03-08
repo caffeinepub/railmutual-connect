@@ -1,11 +1,28 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { AlertCircle, ArrowRight, Loader2, Shield, Users } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import {
+  AlertCircle,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Loader2,
+  Shield,
+  Users,
+} from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useActor } from "../hooks/useActor";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
+import { setAdminSession } from "./AdminLoginPage";
+
+// Admin credentials
+const ADMIN_EMAIL = "railmutualconnect@gmail.com";
+const ADMIN_PASSWORD = "admin@2026";
+
+type AuthMode = "choose" | "user" | "admin";
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -14,6 +31,14 @@ export default function AuthPage() {
   const queryClient = useQueryClient();
   const [authError, setAuthError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // Admin form state
+  const [mode, setMode] = useState<AuthMode>("choose");
+  const [adminEmail, setAdminEmail] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [adminError, setAdminError] = useState<string | null>(null);
 
   const isAuthenticated = !!identity && !identity.getPrincipal().isAnonymous();
 
@@ -27,8 +52,6 @@ export default function AuthPage() {
       setAuthError(null);
 
       try {
-        // The actor initialization already called registerOrLogin and cached the profile.
-        // Use the cached result if available, otherwise call registerOrLogin again.
         let profile = queryClient.getQueryData<{ fullName: string }>([
           "registerOrLoginProfile",
         ]);
@@ -39,7 +62,6 @@ export default function AuthPage() {
           queryClient.setQueryData(["currentUserProfile"], profile);
         }
 
-        // If profile is incomplete (no fullName), go to profile setup
         if (!profile.fullName || profile.fullName.trim() === "") {
           navigate({ to: "/profile" });
         } else {
@@ -52,7 +74,6 @@ export default function AuthPage() {
           "Failed to initialize your account. Please try logging in again.",
         );
         setIsRedirecting(false);
-        // Clear identity so user can retry
         await clear();
         queryClient.clear();
       }
@@ -80,6 +101,29 @@ export default function AuthPage() {
   const handleLogout = async () => {
     await clear();
     queryClient.clear();
+  };
+
+  const handleAdminLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminError(null);
+    setAdminLoading(true);
+
+    await new Promise((r) => setTimeout(r, 600));
+
+    const emailMatch =
+      adminEmail.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    const passwordMatch = adminPassword === ADMIN_PASSWORD;
+
+    if (emailMatch && passwordMatch) {
+      setAdminSession();
+      navigate({ to: "/admin" });
+    } else if (!emailMatch) {
+      setAdminError("Invalid admin email. Please check and try again.");
+    } else {
+      setAdminError("Incorrect admin password. Please try again.");
+      setAdminPassword("");
+    }
+    setAdminLoading(false);
   };
 
   const isLoading =
@@ -125,95 +169,262 @@ export default function AuthPage() {
               Welcome Back
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Sign in securely to access your mutual transfer dashboard and
-              connect with fellow railway employees.
+              Sign in to access your mutual transfer dashboard and connect with
+              fellow railway employees.
             </p>
           </div>
 
-          {/* Error Alert */}
+          {/* Mode selector tabs */}
+          {!isAuthenticated && mode === "choose" && (
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                data-ocid="auth.user_login_tab"
+                onClick={() => setMode("user")}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-border hover:border-primary hover:bg-primary/5 transition-all"
+              >
+                <Users className="w-7 h-7 text-primary" />
+                <span className="font-semibold text-foreground text-sm">
+                  User Login
+                </span>
+                <span className="text-xs text-muted-foreground text-center">
+                  For railway employees
+                </span>
+              </button>
+              <button
+                type="button"
+                data-ocid="auth.admin_login_tab"
+                onClick={() => setMode("admin")}
+                className="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-border hover:border-primary hover:bg-primary/5 transition-all"
+              >
+                <Shield className="w-7 h-7 text-primary" />
+                <span className="font-semibold text-foreground text-sm">
+                  Admin Login
+                </span>
+                <span className="text-xs text-muted-foreground text-center">
+                  For administrators only
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* Error Alert (user flow) */}
           {authError && (
-            <Alert variant="destructive">
+            <Alert variant="destructive" data-ocid="auth.error_state">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>{authError}</AlertDescription>
             </Alert>
           )}
 
-          {/* Login Card */}
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-card space-y-6">
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    Secure Authentication
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Uses passkeys, Google, Apple, or Microsoft sign-in
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <Users className="w-5 h-5 text-accent flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    Railway Employee Network
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Connect with employees across all zones and divisions
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {isAuthenticated ? (
+          {/* User Login Card */}
+          {(mode === "user" || isAuthenticated) && (
+            <div className="bg-card border border-border rounded-2xl p-8 shadow-card space-y-6">
+              {mode === "user" && !isAuthenticated && (
+                <button
+                  type="button"
+                  data-ocid="auth.back_to_choose_button"
+                  onClick={() => setMode("choose")}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  ← Back
+                </button>
+              )}
               <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      Secure Authentication
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Uses passkeys, Google, Apple, or Microsoft sign-in
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                  <Users className="w-5 h-5 text-accent flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      Railway Employee Network
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Connect with employees across all zones and divisions
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {isAuthenticated ? (
+                <div className="space-y-3">
+                  <Button
+                    className="w-full"
+                    disabled={isLoading}
+                    onClick={() => navigate({ to: "/dashboard" })}
+                    data-ocid="auth.go_to_dashboard_button"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Setting up your account…
+                      </>
+                    ) : (
+                      <>
+                        Go to Dashboard
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full text-muted-foreground"
+                    onClick={handleLogout}
+                    disabled={isLoading}
+                    data-ocid="auth.signout_button"
+                  >
+                    Sign out
+                  </Button>
+                </div>
+              ) : (
                 <Button
                   className="w-full"
+                  size="lg"
+                  onClick={handleLogin}
                   disabled={isLoading}
-                  onClick={() => navigate({ to: "/dashboard" })}
+                  data-ocid="auth.signin_button"
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Setting up your account…
+                      Signing in…
                     </>
                   ) : (
                     <>
-                      Go to Dashboard
+                      Sign In Securely
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
                   )}
                 </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full text-muted-foreground"
-                  onClick={handleLogout}
-                  disabled={isLoading}
-                >
-                  Sign out
-                </Button>
-              </div>
-            ) : (
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={handleLogin}
-                disabled={isLoading}
+              )}
+            </div>
+          )}
+
+          {/* Admin Login Card */}
+          {mode === "admin" && !isAuthenticated && (
+            <div className="bg-card border border-border rounded-2xl p-8 shadow-card space-y-5">
+              <button
+                type="button"
+                data-ocid="auth.admin_back_button"
+                onClick={() => {
+                  setMode("choose");
+                  setAdminError(null);
+                  setAdminEmail("");
+                  setAdminPassword("");
+                }}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Signing in…
-                  </>
-                ) : (
-                  <>
-                    Sign In Securely
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </>
-                )}
-              </Button>
-            )}
-          </div>
+                ← Back
+              </button>
+
+              <div className="flex items-center gap-2 pb-1">
+                <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                <p className="text-sm font-semibold text-foreground">
+                  Admin Access
+                </p>
+              </div>
+
+              {adminError && (
+                <Alert variant="destructive" data-ocid="auth.admin_error_state">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{adminError}</AlertDescription>
+                </Alert>
+              )}
+
+              <form onSubmit={handleAdminLogin} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label
+                    htmlFor="admin-email"
+                    className="text-sm font-medium text-foreground"
+                  >
+                    Admin Email
+                  </label>
+                  <Input
+                    id="admin-email"
+                    data-ocid="auth.admin_email_input"
+                    type="email"
+                    placeholder="Enter admin email"
+                    value={adminEmail}
+                    onChange={(e) => setAdminEmail(e.target.value)}
+                    disabled={adminLoading}
+                    autoFocus
+                    autoComplete="username"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label
+                    htmlFor="admin-password"
+                    className="text-sm font-medium text-foreground"
+                  >
+                    Admin Password
+                  </label>
+                  <div className="relative">
+                    <Input
+                      id="admin-password"
+                      data-ocid="auth.admin_password_input"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter admin password"
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      disabled={adminLoading}
+                      autoComplete="current-password"
+                      className="pr-10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      tabIndex={-1}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <Button
+                  data-ocid="auth.admin_submit_button"
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={
+                    adminLoading ||
+                    adminEmail.trim().length === 0 ||
+                    adminPassword.length === 0
+                  }
+                >
+                  {adminLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Verifying…
+                    </>
+                  ) : (
+                    <>
+                      <Shield className="w-4 h-4 mr-2" />
+                      Access Admin Portal
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+          )}
 
           <p className="text-center text-xs text-muted-foreground">
             By signing in, you agree to use this portal only for legitimate

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import {
   ArrowRight,
   CheckCircle2,
@@ -100,175 +100,154 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Header action buttons — two distinct orange buttons */}
+            {/* Header action buttons */}
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              <Link to="/admin-login" data-ocid="landing.admin_login_button">
+              {identity ? (
                 <Button
+                  onClick={handleGetStarted}
                   size="sm"
-                  className="bg-[#FF6B00] hover:bg-[#E05E00] text-white border-0 font-medium text-xs px-2.5 sm:px-3 gap-1"
+                  className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border border-white/30"
+                  data-ocid="landing.header_login_button"
                 >
-                  <Shield className="w-3 h-3 flex-shrink-0" />
-                  <span>Admin</span>
+                  Dashboard
                 </Button>
-              </Link>
-              <Button
-                onClick={handleGetStarted}
-                size="sm"
-                className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border border-white/30"
-                data-ocid="landing.header_login_button"
-              >
-                {identity ? "Dashboard" : "Login"}
-              </Button>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => router.navigate({ to: "/auth" })}
+                    size="sm"
+                    variant="outline"
+                    className="text-white border-white/40 hover:bg-white/10 font-medium text-xs px-2.5 sm:px-3 bg-transparent"
+                    data-ocid="landing.header_login_button"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => router.navigate({ to: "/auth" })}
+                    size="sm"
+                    className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border-0"
+                    data-ocid="landing.header_create_profile_button"
+                  >
+                    Create Profile
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section — white background with subtle railway tracks background */}
-      <section className="relative overflow-hidden bg-white border-b border-gray-100">
-        {/* Railway background image — very subtle, low opacity */}
+      {/* Hero Section — cinematic dark railway background */}
+      <section
+        className="relative overflow-hidden min-h-[85vh] flex items-center"
+        style={{
+          backgroundImage:
+            "url('/assets/generated/hero-railway-cinematic.dim_1920x1080.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center 30%",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Layer 1: primary dark navy gradient for readability */}
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage:
-              "url('/assets/generated/hero-railway-bg.dim_1600x900.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.07,
+            background:
+              "linear-gradient(to top, #0B2C4A 0%, rgba(11,44,74,0.88) 35%, rgba(11,44,74,0.65) 65%, rgba(11,44,74,0.45) 100%)",
           }}
         />
-        {/* Subtle grid pattern layered on top for additional depth */}
+        {/* Layer 2: subtle orange glow from right side for cinematic depth */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0"
           style={{
-            backgroundImage:
-              "linear-gradient(#1a3a6b 1px, transparent 1px), linear-gradient(90deg, #1a3a6b 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
+            background:
+              "linear-gradient(to left, rgba(249,115,22,0.18) 0%, transparent 55%)",
           }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="max-w-3xl">
-            {/* Hero logo — icon vertically spans from top of "RailMutual" to bottom of tagline */}
-            <div className="flex items-stretch gap-5 mb-8">
-              {/* Icon: self-stretch so it spans full height of the text block (both lines + tagline) */}
-              <div className="flex items-center flex-shrink-0">
-                <img
-                  src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
-                  alt="RailMutual Connect icon"
-                  className="w-auto object-contain"
-                  style={{
-                    height: "clamp(7rem, 14vw, 10.5rem)",
-                    imageRendering: "auto",
-                  }}
-                />
-              </div>
-              <div className="flex flex-col leading-tight justify-between py-0.5">
-                <div>
-                  <span
-                    className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight leading-none block"
-                    style={{ color: "#1a3a6b" }}
-                  >
-                    RailMutual
-                  </span>
-                  <span
-                    className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight leading-none block"
-                    style={{ color: "#FF6B00" }}
-                  >
-                    Connect
-                  </span>
-                </div>
+            {/* Hero logo — icon with stacked text */}
+            <div className="flex items-center gap-4 mb-8">
+              {/* Icon: fixed size, transparent bg */}
+              <img
+                src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
+                alt="RailMutual Connect icon"
+                className="flex-shrink-0 object-contain"
+                style={{ width: "72px", height: "72px" }}
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="font-display font-extrabold text-white text-3xl sm:text-4xl tracking-tight leading-none block">
+                  RailMutual
+                </span>
                 <span
-                  className="text-sm sm:text-base font-medium tracking-wide mt-auto pt-2"
-                  style={{ color: "#555" }}
+                  className="font-display font-extrabold text-3xl sm:text-4xl tracking-tight leading-none block"
+                  style={{ color: "#F97316" }}
                 >
+                  Connect
+                </span>
+                <span className="text-white/60 text-xs sm:text-sm font-medium tracking-wide mt-1.5">
                   Mutual Transfers Made Easy
                 </span>
               </div>
             </div>
 
-            <h1
-              className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-4"
-              style={{ color: "#1a3a6b" }}
-            >
+            <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight mb-5 text-white">
               Find Your Perfect{" "}
-              <span style={{ color: "#FF6B00" }}>Mutual Transfer</span> Partner
+              <span style={{ color: "#F97316" }}>Mutual Transfer</span> Partner
             </h1>
-            <div className="mb-8 max-w-xl">
-              <p
-                className="text-base sm:text-lg leading-relaxed"
-                style={{ color: "#555" }}
-              >
-                A dedicated platform for Indian Railways employees to discover
-                mutual transfer opportunities. Connect with colleagues who want
-                to swap postings — fast, simple, and secure.
-              </p>
-            </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <p className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
+              A dedicated platform for Indian Railways employees to discover
+              mutual transfer opportunities. Connect with colleagues who want to
+              swap postings — fast, simple, and secure.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="text-white border-0 font-semibold text-base px-8 gap-2 shadow-md"
-                style={{ backgroundColor: "#FF6B00" }}
+                className="rounded-full px-8 text-white font-semibold text-base gap-2 shadow-lg border-0"
+                style={{ backgroundColor: "#F97316" }}
                 data-ocid="landing.hero_cta_button"
               >
-                {identity ? "Go to Dashboard" : "Get Started Free"}
+                {identity ? "Go to Dashboard" : "Create Profile"}
                 <ArrowRight className="w-5 h-5" />
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() =>
-                  document
-                    .getElementById("how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="font-medium text-base"
-                style={{ borderColor: "#1a3a6b", color: "#1a3a6b" }}
-                data-ocid="landing.how_it_works_button"
+                onClick={() => router.navigate({ to: "/auth" })}
+                className="rounded-full px-8 font-medium text-base text-white border-white/40 bg-white/10 hover:bg-white/20"
+                data-ocid="landing.header_login_button"
               >
-                How It Works
+                Login
               </Button>
             </div>
 
             {/* Trust badges */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span
-                className="flex items-center gap-1.5 text-xs rounded-full px-3 py-1 border"
-                style={{
-                  color: "#1a3a6b",
-                  borderColor: "#1a3a6b30",
-                  backgroundColor: "#1a3a6b08",
-                }}
-              >
-                <Lock className="w-3 h-3" style={{ color: "#FF6B00" }} />
+              <span className="flex items-center gap-1.5 text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
+                <Lock className="w-3 h-3" style={{ color: "#F97316" }} />
                 Secure
               </span>
-              <span
-                className="text-xs rounded-full px-3 py-1 border"
-                style={{
-                  color: "#1a3a6b",
-                  borderColor: "#1a3a6b30",
-                  backgroundColor: "#1a3a6b08",
-                }}
-              >
+              <span className="text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
                 Free to Use
               </span>
-              <span
-                className="text-xs rounded-full px-3 py-1 border"
-                style={{
-                  color: "#1a3a6b",
-                  borderColor: "#1a3a6b30",
-                  backgroundColor: "#1a3a6b08",
-                }}
-              >
+              <span className="text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
                 Indian Railways Only
               </span>
             </div>
           </div>
         </div>
+
+        {/* Orange accent line at bottom of hero */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-1"
+          style={{
+            background: "linear-gradient(to right, #F97316, #0B2C4A)",
+          }}
+        />
       </section>
 
       {/* Stats Bar */}
@@ -457,15 +436,7 @@ export default function LandingPage() {
                   >
                     railmutualconnect@gmail.com
                   </a>
-                </span>{" "}
-                ·{" "}
-                <Link
-                  to="/admin-login"
-                  data-ocid="landing.footer_admin_link"
-                  className="text-white/30 hover:text-white/60 transition-colors"
-                >
-                  Admin
-                </Link>
+                </span>
               </p>
               <p>
                 Built with{" "}

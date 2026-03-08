@@ -9,7 +9,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import Layout from "./components/Layout";
 import { useInternetIdentity } from "./hooks/useInternetIdentity";
-import AdminLoginPage, { hasAdminSession } from "./pages/AdminLoginPage";
+import { hasAdminSession } from "./pages/AdminLoginPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -33,12 +33,6 @@ const authRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/auth",
   component: AuthPage,
-});
-
-const adminLoginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/admin-login",
-  component: AdminLoginPage,
 });
 
 // Protected layout route
@@ -74,16 +68,14 @@ function RedirectToAuth() {
 function RedirectToAdminLogin() {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate({ to: "/admin-login" });
+    navigate({ to: "/auth" });
   }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-3">
         <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="text-muted-foreground text-sm">
-          Redirecting to admin login...
-        </p>
+        <p className="text-muted-foreground text-sm">Redirecting to login...</p>
       </div>
     </div>
   );
@@ -148,7 +140,6 @@ const adminRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   landingRoute,
   authRoute,
-  adminLoginRoute,
   protectedLayoutRoute.addChildren([
     dashboardRoute,
     profileRoute,

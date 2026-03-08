@@ -888,7 +888,8 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("adminAuthenticated");
-    navigate({ to: "/admin-login" });
+    sessionStorage.removeItem("railmutual_admin_session");
+    navigate({ to: "/auth" });
   };
 
   const navItems: Array<{

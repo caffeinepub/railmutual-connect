@@ -2,14 +2,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import {
-  AlertCircle,
-  ArrowRight,
-  Loader2,
-  Shield,
-  Train,
-  Users,
-} from "lucide-react";
+import { AlertCircle, ArrowRight, Loader2, Shield, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useActor } from "../hooks/useActor";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
@@ -97,12 +90,17 @@ export default function AuthPage() {
       {/* Header */}
       <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center gap-3 shadow-md">
         <img
-          src="/assets/generated/railmutual-logo.dim_256x256.png"
+          src="/assets/generated/logo-icon-only.dim_200x200.png"
           alt="RailMutual Connect"
-          className="h-10 w-10 rounded-lg object-cover"
+          className="h-10 w-10 rounded-lg object-contain bg-white/10 p-1"
         />
-        <div>
-          <h1 className="text-xl font-bold font-poppins tracking-tight">
+        <img
+          src="/assets/generated/logo-primary.dim_800x300.png"
+          alt="RailMutual Connect"
+          className="h-10 object-contain hidden sm:block"
+        />
+        <div className="sm:hidden">
+          <h1 className="text-xl font-bold tracking-tight">
             RailMutual Connect
           </h1>
           <p className="text-xs text-primary-foreground/70">
@@ -117,7 +115,11 @@ export default function AuthPage() {
           {/* Hero */}
           <div className="text-center space-y-3">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-2">
-              <Train className="w-10 h-10 text-primary" />
+              <img
+                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                alt="RailMutual Connect"
+                className="w-14 h-14 object-contain"
+              />
             </div>
             <h2 className="text-3xl font-bold font-poppins text-foreground">
               Welcome Back

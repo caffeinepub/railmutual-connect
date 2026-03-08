@@ -1,0 +1,24 @@
+{
+  "name": "RailMutual Connect",
+  "short_name": "RailMutual",
+  "description": "Mutual Transfers Made Easy — A platform for Indian Railways employees to find mutual transfer partners.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#135194",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/generated/app-icon-192x192.dim_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/generated/app-icon-512x512.dim_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

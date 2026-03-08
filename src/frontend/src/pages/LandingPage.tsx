@@ -83,17 +83,20 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2.5">
+              {/* Icon only */}
               <img
-                src="/assets/generated/railmutual-logo.dim_256x256.png"
-                alt="RailMutual Connect"
-                className="h-10 w-10 rounded-lg object-contain bg-white/10 p-1"
+                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                alt="RailMutual Connect icon"
+                className="h-9 w-9 object-contain"
               />
-              <div>
-                <span className="font-display font-bold text-white text-lg leading-tight block">
-                  RailMutual
+              {/* Text built in code — same layout as primary branding logo */}
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-extrabold text-white text-lg tracking-tight leading-none">
+                  RailMutual&nbsp;
+                  <span className="text-[#FF941C]">Connect</span>
                 </span>
-                <span className="text-orange-500 text-xs font-medium leading-tight block -mt-0.5">
-                  Connect
+                <span className="text-white/55 text-[10px] font-medium tracking-wide mt-0.5 hidden sm:block">
+                  Mutual Transfers Made Easy
                 </span>
               </div>
             </div>
@@ -146,20 +149,24 @@ export default function LandingPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-36">
           <div className="max-w-2xl">
-            {/* Logo large */}
+            {/* Hero logo — icon + stacked text matching brand sample */}
             <div className="flex items-center gap-4 mb-8">
               <img
-                src="/assets/generated/railmutual-logo.dim_256x256.png"
-                alt="RailMutual Connect Logo"
-                className="h-20 w-20 rounded-2xl object-contain bg-white/15 p-2 shadow-lg"
+                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                alt="RailMutual Connect icon"
+                className="h-20 sm:h-24 w-auto object-contain drop-shadow-lg"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" }}
               />
-              <div>
-                <h2 className="font-display font-bold text-white text-2xl sm:text-3xl leading-tight">
-                  RailMutual Connect
-                </h2>
-                <p className="text-orange-400 font-medium text-sm mt-0.5">
+              <div className="flex flex-col leading-tight">
+                <span className="font-display font-extrabold text-white text-4xl sm:text-5xl tracking-tight leading-none">
+                  RailMutual
+                </span>
+                <span className="font-display font-extrabold text-[#FF941C] text-4xl sm:text-5xl tracking-tight leading-none">
+                  Connect
+                </span>
+                <span className="text-white/65 text-sm sm:text-base font-medium tracking-wide mt-2">
                   Mutual Transfers Made Easy
-                </p>
+                </span>
               </div>
             </div>
 
@@ -347,26 +354,30 @@ export default function LandingPage() {
       <footer className="bg-primary-800 text-white/60 py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <img
-                src="/assets/generated/railmutual-logo.dim_256x256.png"
-                alt="RailMutual Connect"
-                className="h-10 w-10 rounded-lg object-contain bg-white/10 p-1"
-              />
-              <div>
-                <span className="font-display font-bold text-white text-sm block">
-                  RailMutual Connect
-                </span>
-                <span className="text-orange-400 text-xs block -mt-0.5">
-                  Mutual Transfers Made Easy
-                </span>
-                <a
-                  href="mailto:railmutualconnect@gmail.com"
-                  className="text-white/50 hover:text-orange-400 text-xs transition-colors mt-0.5 block"
-                >
-                  railmutualconnect@gmail.com
-                </a>
+            <div className="flex flex-col gap-2">
+              {/* Footer logo — icon + coded text matching primary branding */}
+              <div className="flex items-center gap-2.5">
+                <img
+                  src="/assets/generated/logo-icon-only.dim_200x200.png"
+                  alt="RailMutual Connect"
+                  className="h-9 w-9 object-contain opacity-90"
+                />
+                <div className="flex flex-col leading-none">
+                  <span className="font-display font-extrabold text-white text-base tracking-tight leading-none">
+                    RailMutual&nbsp;
+                    <span className="text-[#FF941C]">Connect</span>
+                  </span>
+                  <span className="text-white/50 text-[10px] font-medium tracking-wide mt-0.5">
+                    Mutual Transfers Made Easy
+                  </span>
+                </div>
               </div>
+              <a
+                href="mailto:railmutualconnect@gmail.com"
+                className="text-white/50 hover:text-orange-400 text-xs transition-colors block"
+              >
+                railmutualconnect@gmail.com
+              </a>
             </div>
             <div className="text-center sm:text-right text-xs space-y-1">
               <p>

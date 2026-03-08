@@ -6,7 +6,6 @@ import {
   LogOut,
   Menu,
   ShieldCheck,
-  Train,
   UserCircle,
   Users,
   X,
@@ -48,19 +47,20 @@ export default function Layout({ children }: LayoutProps) {
       <header className="sticky top-0 z-50 bg-primary-700 shadow-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
+            {/* Logo — icon + coded text matching primary branding */}
             <Link to="/dashboard" className="flex items-center gap-2.5 group">
               <img
-                src="/assets/generated/railmutual-logo.dim_256x256.png"
-                alt="RailMutual Connect"
-                className="h-10 w-10 rounded-lg object-contain bg-white/10 p-1"
+                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                alt="RailMutual Connect icon"
+                className="h-9 w-9 object-contain"
               />
-              <div className="hidden sm:block">
-                <span className="font-display font-bold text-white text-lg leading-tight block">
-                  RailMutual
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-extrabold text-white text-base tracking-tight leading-none">
+                  RailMutual&nbsp;
+                  <span className="text-[#FF941C]">Connect</span>
                 </span>
-                <span className="text-orange-500 text-xs font-medium leading-tight block -mt-0.5">
-                  Connect
+                <span className="text-white/55 text-[10px] font-medium tracking-wide mt-0.5 hidden sm:block">
+                  Mutual Transfers Made Easy
                 </span>
               </div>
             </Link>
@@ -181,7 +181,11 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
-              <Train className="w-3.5 h-3.5 text-orange-500" />
+              <img
+                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                alt=""
+                className="w-4 h-4 object-contain opacity-80"
+              />
               <span>RailMutual Connect — Mutual Transfers Made Easy</span>
             </div>
             <div className="text-center sm:text-right">

@@ -2,68 +2,40 @@
 
 ## Current State
 
-The landing page (`LandingPage.tsx`) has:
-- A header with deep blue background, logo (icon + coded text), Login and Create Profile buttons
-- A hero section with white/light background, subtle low-opacity railway image overlay (7% opacity), and left-aligned content
-- Stats bar with blue background and orange numbers
-- Features grid (4 cards, white background)
-- How It Works section (light blue/grey background, 3 steps with orange numbered circles)
-- Important Notice section (orange-50 background with orange left border)
-- Footer (dark blue background)
-
-The hero feels flat and light — no cinematic depth. The background image is nearly invisible at 7% opacity.
-
-A new cinematic background image has been generated at:
-`/assets/generated/hero-railway-cinematic.dim_1920x1080.jpg`
+The landing page (`LandingPage.tsx`) exists with all sections: Header, Hero, Stats Bar, Feature Cards (Why Choose), How It Works, Important Notice, and Footer. The page has basic styling using Tailwind and some inline styles. The header has a logo with a white background box around the icon and two action buttons. The hero uses a cinematic background image with navy gradient overlay. The footer contains a "Built with caffeine.ai" line that needs removal. The How It Works section uses a 3-column grid on desktop but the step circles and connectors could be stronger.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full-height cinematic hero section with the new railway locomotive background image displayed prominently (not at 7% opacity — the image should be clearly visible)
-- Multi-layer dark overlay on the hero: bottom-to-top gradient from `#0B2C4A` (deep navy) at bottom, semi-transparent navy in middle, transitioning toward orange tint at top edge — so text is always readable against the image
-- Orange accent glow/highlight element behind the locomotive area to reinforce the orange brand color
-- Large bold hero headline with "Mutual Transfer" words highlighted in `#F97316` orange
-- Hero subheadline paragraph with a subtle dark backdrop for readability
-- Large rounded CTA buttons: "Create Profile" in `#F97316` orange (primary), "Login" in white/light grey (secondary)
-- Trust badge pills below CTAs (Secure, Free to Use, Indian Railways Only)
-- Decorative orange horizontal accent line separating hero from stats bar
-- Light section dividers between post-hero sections
+- Hamburger mobile menu to the landing page header (the LandingPage header, not Layout.tsx)
+- Sticky landing page header with proper z-index
+- Visual arrow connectors between How It Works steps on desktop
+- Stat item icons (small, subtle) next to each stat number
+- New hero background image: `/assets/generated/hero-railway-v2.dim_1920x1080.jpg`
 
 ### Modify
-- Hero section: change from white/light background to dark cinematic (deep navy + railway image)
-- Hero section: increase height to `min-h-[85vh]` or `min-h-[600px]` for cinematic feel
-- Hero section: text colors change from dark blue to white (since background is now dark)
-- Hero logo text: "RailMutual" in white, "Connect" in `#F97316` orange (already correct but needs to show on dark bg)
-- Stats bar: keep dark blue but add stronger orange accent bottom border
-- Features section: keep white/light — creates strong contrast break after dark hero
-- How It Works section: keep light grey background — adds contrast rhythm
-- Important Notice: keep orange-50/beige background — already correct
-- Footer: keep dark blue — bookends the page with dark hero at top and dark footer at bottom
-- CTA buttons in hero: make them larger (`size="lg"`), fully rounded (`rounded-full`), with proper padding
-- The "How It Works" section scroll target anchor remains functional
+- **Header**: Height 64–72px. Gradient background `#0B2C4A → #12395F`. Left side: icon (50px white square container, icon fills ~78% of it) + "RailMutual Connect" bold text + tagline "Mutual Transfers Made Easy" below. Right side: Login (transparent, white border, white text) + Create Profile (orange #F97316, white text, rounded-lg, slightly larger). Gap 12px between buttons. Padding 20px left/right. All elements vertically centered. Sticky. Mobile-responsive with hamburger menu for small screens.
+- **Hero section**: Use new image `/assets/generated/hero-railway-v2.dim_1920x1080.jpg`. Stronger dark navy overlay (heavier `#0B2C4A` gradient). Increase headline to `text-4xl sm:text-5xl lg:text-6xl xl:text-7xl`. "Mutual Transfer" highlighted in `#F97316`. Better vertical spacing between logo block, headline, description, CTA buttons. CTA buttons: "Create Profile" is primary (`#F97316`, white text, rounded-full, shadow), "Login" is secondary (transparent, white border). Both buttons large, properly spaced.
+- **Stats Bar**: Larger numbers (`text-3xl sm:text-4xl` font weight bold). Add a relevant small icon per stat (Train, Map, BadgeCheck, ListChecks from lucide). Improve spacing and dividers between stats.
+- **Feature Cards**: Already have soft shadow and rounded corners — enhance with larger padding (`p-8`), improve icon container size, ensure consistent gap between cards, add hover lift effect.
+- **How It Works**: Keep horizontal 3-column layout on desktop. Replace dashed line with a more visible arrow connector. Step circles stay orange with white number. Better spacing.
+- **Important Notice**: Display in a highlighted light beige (`bg-amber-50`) container with clear border (`border border-amber-200`), improved padding (`py-12 px-8`), rounded-xl.
+- **Footer**: Remove "Built with ❤️ using caffeine.ai" text entirely. Keep: logo icon + "RailMutual Connect" text + tagline + contact email + copyright line only.
 
 ### Remove
-- The 7% opacity background image in the hero (replaced by the full cinematic image)
-- The subtle grid pattern overlay in the hero (replaced by layered gradient overlay)
-- White/light background from hero section
+- White square background wrapper around icon in header (replace with clean white square container per spec: ~50px with icon filling 78%)
+- "Built with ❤️ using caffeine.ai" text from landing page footer
+- Any "Admin" button from the landing page header
 
 ## Implementation Plan
 
-1. Update `LandingPage.tsx` hero section:
-   - Set `backgroundImage` to `/assets/generated/hero-railway-cinematic.dim_1920x1080.jpg`
-   - Set backgroundSize to `cover`, backgroundPosition to `center 30%` (emphasizes locomotive upper half)
-   - Remove old 7% opacity image and grid pattern divs
-   - Add layered overlay divs:
-     - Layer 1: `linear-gradient(to top, #0B2C4A 0%, rgba(11,44,74,0.82) 40%, rgba(11,44,74,0.55) 75%, rgba(11,44,74,0.4) 100%)`
-     - Layer 2: subtle orange accent at far right edge: `linear-gradient(to left, rgba(249,115,22,0.15) 0%, transparent 50%)`
-   - Change hero container to dark (`text-white`)
-   - Update logo text: "RailMutual" white, "Connect" `#F97316`
-   - Update h1 to white with "Mutual Transfer" in `#F97316`
-   - Update description paragraph to `text-white/80`
-   - CTA buttons: "Create Profile" → `bg-[#F97316] hover:bg-[#EA6C10] text-white rounded-full px-8`; "How It Works" → `bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-full px-8`
-   - Trust badges: white/translucent style on dark background
-   - Add thin orange bottom border accent line to hero: `h-1 bg-gradient-to-r from-[#F97316] to-[#0B2C4A]`
-
-2. Keep all sections below the hero (stats bar, features, how-it-works, notice, footer) structurally unchanged — only minor spacing/divider tweaks if needed for rhythm.
-
-3. Ensure all `data-ocid` markers are preserved.
+1. Update `LandingPage.tsx`:
+   - Redesign header with sticky positioning, gradient background, proper flex layout, correct button styles, hamburger menu state for mobile
+   - Update hero section: new background image, stronger overlay, larger headline, better spacing, button redesign
+   - Upgrade stats bar: larger numbers, lucide icons, better spacing
+   - Improve feature cards: more padding, consistent spacing
+   - Improve How It Works: stronger arrow connector on desktop
+   - Restyle Important Notice: amber-50 background, proper padding, rounded container
+   - Clean up footer: remove caffeine.ai attribution, keep only logo + tagline + email + copyright
+   - Ensure all sections are mobile-responsive
+   - Add `data-ocid` deterministic markers to all interactive elements

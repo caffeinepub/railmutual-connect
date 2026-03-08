@@ -2,19 +2,25 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "@tanstack/react-router";
 import {
   ArrowRight,
+  BadgeCheck,
   CheckCircle2,
-  Heart,
+  ListChecks,
   Lock,
+  Map as MapIcon,
   MapPin,
+  Menu,
   Shield,
   Train,
   Users,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 
 export default function LandingPage() {
   const router = useRouter();
   const { identity } = useInternetIdentity();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleGetStarted = () => {
     if (identity) {
@@ -53,195 +59,264 @@ export default function LandingPage() {
 
   const steps = [
     {
-      step: "01",
+      step: "1",
       title: "Create Your Profile",
       desc: "Enter your current posting, desired location, and designation.",
     },
     {
-      step: "02",
-      title: "Find Matches",
+      step: "2",
+      title: "Enter Your Postings",
       desc: "Our system automatically finds employees who match your transfer requirements.",
     },
     {
-      step: "03",
-      title: "Connect & Coordinate",
+      step: "3",
+      title: "Connect with Your Match",
       desc: "Reach out to your match and coordinate the mutual transfer process.",
     },
   ];
 
   const stats = [
-    { value: "17", label: "Railway Zones" },
-    { value: "68+", label: "Divisions" },
-    { value: "100%", label: "Free to Use" },
-    { value: "3 Steps", label: "Simple Process" },
+    { value: "17", label: "Railway Zones", icon: Train },
+    { value: "68+", label: "Divisions", icon: MapIcon },
+    { value: "100%", label: "Free to Use", icon: BadgeCheck },
+    { value: "3 Steps", label: "Simple Process", icon: ListChecks },
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="bg-primary-700 shadow-nav">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-2">
-            {/* Logo — shrinks gracefully on mobile */}
-            <div className="flex items-center gap-2 min-w-0 flex-shrink">
+      {/* ── STICKY HEADER ── */}
+      <header
+        className="sticky top-0 z-50 h-16 md:h-[72px] flex items-center px-5 shadow-nav"
+        style={{
+          background: "linear-gradient(135deg, #0B2C4A 0%, #12395F 100%)",
+        }}
+      >
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-3">
+          {/* Left: Logo block */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="w-[50px] h-[50px] rounded-lg bg-white flex items-center justify-center flex-shrink-0">
               <img
                 src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
                 alt="RailMutual Connect icon"
-                className="h-9 w-9 object-contain flex-shrink-0 rounded-md bg-white p-0.5"
+                className="w-[38px] h-[38px] object-contain"
               />
-              <div className="flex flex-col leading-none min-w-0">
-                <span className="font-display font-extrabold text-white text-base sm:text-lg tracking-tight leading-none whitespace-nowrap">
-                  RailMutual&nbsp;
-                  <span style={{ color: "#FF6B00" }}>Connect</span>
-                </span>
-                <span className="text-white/55 text-[10px] font-medium tracking-wide mt-0.5 hidden sm:block">
-                  Mutual Transfers Made Easy
-                </span>
-              </div>
             </div>
-
-            {/* Header action buttons */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              {identity ? (
-                <Button
-                  onClick={handleGetStarted}
-                  size="sm"
-                  className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border border-white/30"
-                  data-ocid="landing.header_login_button"
-                >
-                  Dashboard
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    onClick={() => router.navigate({ to: "/auth" })}
-                    size="sm"
-                    variant="outline"
-                    className="text-white border-white/40 hover:bg-white/10 font-medium text-xs px-2.5 sm:px-3 bg-transparent"
-                    data-ocid="landing.header_login_button"
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    onClick={() => router.navigate({ to: "/auth" })}
-                    size="sm"
-                    className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border-0"
-                    data-ocid="landing.header_create_profile_button"
-                  >
-                    Create Profile
-                  </Button>
-                </>
-              )}
+            <div className="flex flex-col leading-none">
+              <span className="font-display font-extrabold text-white text-base sm:text-lg tracking-tight leading-none">
+                RailMutual <span style={{ color: "#F97316" }}>Connect</span>
+              </span>
+              <span className="text-white/50 text-[10px] sm:text-xs font-medium tracking-wide mt-0.5 hidden sm:block">
+                Mutual Transfers Made Easy
+              </span>
             </div>
           </div>
+
+          {/* Right: Desktop buttons */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+            {identity ? (
+              <Button
+                onClick={handleGetStarted}
+                className="text-white font-semibold text-sm px-5 py-2 rounded-lg shadow-md border-0"
+                style={{ backgroundColor: "#F97316" }}
+                data-ocid="landing.header_create_profile_button"
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button
+                  onClick={() => router.navigate({ to: "/auth" })}
+                  variant="outline"
+                  className="border border-white/60 text-white bg-transparent hover:bg-white/10 text-sm px-4 py-2 rounded-lg font-medium"
+                  data-ocid="landing.header_login_button"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => router.navigate({ to: "/auth" })}
+                  className="text-white text-sm px-5 py-2 rounded-lg font-semibold shadow-md border-0"
+                  style={{ backgroundColor: "#F97316" }}
+                  data-ocid="landing.header_create_profile_button"
+                >
+                  Create Profile
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* Right: Mobile hamburger */}
+          <button
+            type="button"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-white hover:bg-white/10 transition-colors flex-shrink-0"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+            data-ocid="landing.mobile_menu_toggle"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
         </div>
+
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <div
+            className="absolute top-full left-0 right-0 z-40 py-4 px-5 flex flex-col gap-3 shadow-nav md:hidden"
+            style={{ backgroundColor: "#0B2C4A" }}
+          >
+            {identity ? (
+              <Button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.navigate({ to: "/dashboard" });
+                }}
+                className="w-full text-white font-semibold text-sm rounded-lg border-0"
+                style={{ backgroundColor: "#F97316" }}
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    router.navigate({ to: "/auth" });
+                  }}
+                  variant="outline"
+                  className="w-full border border-white/50 text-white bg-transparent hover:bg-white/10 text-sm rounded-lg font-medium"
+                  data-ocid="landing.header_login_button"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    router.navigate({ to: "/auth" });
+                  }}
+                  className="w-full text-white text-sm rounded-lg font-semibold border-0"
+                  style={{ backgroundColor: "#F97316" }}
+                  data-ocid="landing.header_create_profile_button"
+                >
+                  Create Profile
+                </Button>
+              </>
+            )}
+          </div>
+        )}
       </header>
 
-      {/* Hero Section — cinematic dark railway background */}
+      {/* ── HERO SECTION ── */}
       <section
-        className="relative overflow-hidden min-h-[85vh] flex items-center"
+        className="relative overflow-hidden min-h-[90vh] flex items-center"
         style={{
           backgroundImage:
-            "url('/assets/generated/hero-railway-cinematic.dim_1920x1080.jpg')",
+            "url('/assets/generated/hero-railway-v2.dim_1920x1080.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center 30%",
+          backgroundPosition: "center 40%",
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Layer 1: primary dark navy gradient for readability */}
+        {/* Layer 1: deep navy gradient for readability */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to top, #0B2C4A 0%, rgba(11,44,74,0.88) 35%, rgba(11,44,74,0.65) 65%, rgba(11,44,74,0.45) 100%)",
+              "linear-gradient(to top, #0B2C4A 0%, rgba(11,44,74,0.92) 30%, rgba(11,44,74,0.75) 60%, rgba(11,44,74,0.50) 100%)",
           }}
         />
-        {/* Layer 2: subtle orange glow from right side for cinematic depth */}
+        {/* Layer 2: subtle orange right-side glow for depth */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to left, rgba(249,115,22,0.18) 0%, transparent 55%)",
+              "linear-gradient(to left, rgba(249,115,22,0.15) 0%, transparent 50%)",
           }}
         />
 
         <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="max-w-3xl">
-            {/* Hero logo — icon with stacked text */}
-            <div className="flex items-center gap-4 mb-8">
-              {/* Icon: fixed size, transparent bg */}
-              <img
-                src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
-                alt="RailMutual Connect icon"
-                className="flex-shrink-0 object-contain"
-                style={{ width: "72px", height: "72px" }}
-              />
-              <div className="flex flex-col leading-tight">
-                <span className="font-display font-extrabold text-white text-3xl sm:text-4xl tracking-tight leading-none block">
+            {/* Hero logo block */}
+            <div className="flex items-center gap-5 mb-10">
+              <div className="w-[90px] h-[90px] rounded-2xl bg-white flex items-center justify-center shadow-xl flex-shrink-0">
+                <img
+                  src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
+                  alt="RailMutual Connect icon"
+                  className="w-[74px] h-[74px] object-contain"
+                />
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-extrabold text-white text-4xl sm:text-5xl leading-none block">
                   RailMutual
                 </span>
                 <span
-                  className="font-display font-extrabold text-3xl sm:text-4xl tracking-tight leading-none block"
+                  className="font-display font-extrabold text-4xl sm:text-5xl leading-none block mt-1"
                   style={{ color: "#F97316" }}
                 >
                   Connect
                 </span>
-                <span className="text-white/60 text-xs sm:text-sm font-medium tracking-wide mt-1.5">
+                <span className="text-white/60 text-sm sm:text-base font-medium mt-2 tracking-wide">
                   Mutual Transfers Made Easy
                 </span>
               </div>
             </div>
 
-            <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight mb-5 text-white">
+            {/* Headline */}
+            <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-[68px] leading-tight mb-6 text-white">
               Find Your Perfect{" "}
               <span style={{ color: "#F97316" }}>Mutual Transfer</span> Partner
             </h1>
 
-            <p className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
-              A dedicated platform for Indian Railways employees to discover
-              mutual transfer opportunities. Connect with colleagues who want to
-              swap postings — fast, simple, and secure.
-            </p>
+            {/* Description */}
+            <div className="bg-black/20 backdrop-blur-sm rounded-xl px-4 py-3 mb-8 max-w-2xl">
+              <p className="text-white/80 text-base sm:text-lg leading-relaxed">
+                A dedicated platform for Indian Railways employees to discover
+                mutual transfer opportunities. Connect with colleagues who want
+                to swap postings — fast, simple, and secure.
+              </p>
+            </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-10">
               <Button
                 onClick={handleGetStarted}
-                size="lg"
-                className="rounded-full px-8 text-white font-semibold text-base gap-2 shadow-lg border-0"
+                className="rounded-full px-8 py-3.5 text-white font-semibold text-base gap-2 shadow-xl border-0 flex items-center justify-center"
                 style={{ backgroundColor: "#F97316" }}
                 data-ocid="landing.hero_cta_button"
               >
                 {identity ? "Go to Dashboard" : "Create Profile"}
                 <ArrowRight className="w-5 h-5" />
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => router.navigate({ to: "/auth" })}
-                className="rounded-full px-8 font-medium text-base text-white border-white/40 bg-white/10 hover:bg-white/20"
-                data-ocid="landing.header_login_button"
-              >
-                Login
-              </Button>
+              {!identity && (
+                <Button
+                  variant="outline"
+                  onClick={() => router.navigate({ to: "/auth" })}
+                  className="rounded-full px-8 py-3.5 font-medium text-base text-white border border-white/40 bg-white/10 hover:bg-white/20 flex items-center justify-center"
+                  data-ocid="landing.hero_login_button"
+                >
+                  Login
+                </Button>
+              )}
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span className="flex items-center gap-1.5 text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
+            <div className="flex flex-wrap gap-2 mt-2">
+              <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/25 text-white/80 text-xs rounded-full px-3 py-1">
                 <Lock className="w-3 h-3" style={{ color: "#F97316" }} />
                 Secure
               </span>
-              <span className="text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
+              <span className="bg-white/10 backdrop-blur-sm border border-white/25 text-white/80 text-xs rounded-full px-3 py-1">
                 Free to Use
               </span>
-              <span className="text-xs text-white/75 rounded-full px-3 py-1 border border-white/25 bg-white/10 backdrop-blur-sm">
+              <span className="bg-white/10 backdrop-blur-sm border border-white/25 text-white/80 text-xs rounded-full px-3 py-1">
                 Indian Railways Only
               </span>
             </div>
           </div>
         </div>
 
-        {/* Orange accent line at bottom of hero */}
+        {/* Orange accent line at bottom */}
         <div
           className="absolute bottom-0 left-0 right-0 h-1"
           style={{
@@ -250,25 +325,25 @@ export default function LandingPage() {
         />
       </section>
 
-      {/* Stats Bar */}
+      {/* ── STATS BAR ── */}
       <section
-        className="bg-primary-600 py-6 border-b-2"
-        style={{ borderColor: "#FF6B00" }}
+        className="py-8 border-b-2"
+        style={{ backgroundColor: "#0B2C4A", borderColor: "#F97316" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {stats.map(({ value, label }, idx) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-0">
+            {stats.map(({ value, label, icon: Icon }, idx) => (
               <div
                 key={label}
-                className={`text-center py-2 ${idx < stats.length - 1 ? "sm:border-r sm:border-white/20" : ""}`}
+                className={`flex flex-col items-center justify-center py-4 px-6 text-center${
+                  idx < stats.length - 1 ? " border-r border-white/15" : ""
+                }`}
               >
-                <div
-                  className="font-display font-bold text-2xl sm:text-3xl"
-                  style={{ color: "#FF6B00" }}
-                >
+                <Icon className="w-5 h-5 mb-2" style={{ color: "#F97316" }} />
+                <div className="font-display font-bold text-3xl sm:text-4xl text-white">
                   {value}
                 </div>
-                <div className="text-white/70 text-xs sm:text-sm mt-0.5">
+                <div className="text-white/60 text-xs sm:text-sm mt-1 font-medium">
                   {label}
                 </div>
               </div>
@@ -277,14 +352,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 sm:py-20 bg-background">
+      {/* ── FEATURE CARDS (WHY CHOOSE) ── */}
+      <section className="py-20 sm:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-display font-bold text-foreground text-2xl sm:text-3xl mb-3">
+          <div className="text-center mb-16">
+            <h2 className="font-display font-bold text-foreground text-3xl sm:text-4xl mb-4">
               Why Choose RailMutual Connect?
             </h2>
-            <p className="text-muted-foreground text-base max-w-xl mx-auto">
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
               Built specifically for Indian Railways employees, with features
               designed to make mutual transfers straightforward.
             </p>
@@ -293,12 +368,12 @@ export default function LandingPage() {
             {features.map(({ icon: Icon, title, description }) => (
               <div
                 key={title}
-                className="card-top-accent bg-card rounded-xl p-6 shadow-card border border-border hover:shadow-card-hover hover:scale-[1.02] transition-all duration-200 relative overflow-hidden"
+                className="card-top-accent bg-card rounded-2xl p-8 shadow-card border border-border hover:shadow-card-hover hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
               >
-                <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 text-primary-600" />
+                <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-5">
+                  <Icon className="w-7 h-7 text-primary-600" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground text-lg mb-2">
+                <h3 className="font-display font-bold text-foreground text-xl mb-3">
                   {title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
@@ -310,50 +385,86 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-16 sm:py-20 how-it-works-bg">
+      {/* ── HOW IT WORKS ── */}
+      <section id="how-it-works" className="py-20 sm:py-24 how-it-works-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-display font-bold text-foreground text-2xl sm:text-3xl mb-3">
+          <div className="text-center mb-16">
+            <h2 className="font-display font-bold text-foreground text-3xl sm:text-4xl mb-4">
               How It Works
             </h2>
-            <p className="text-muted-foreground text-base max-w-xl mx-auto">
+            <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
               Three simple steps to find your mutual transfer partner.
             </p>
           </div>
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Connecting line on desktop */}
-            <div
-              className="hidden md:block absolute top-7 left-[calc(16.66%+1.75rem)] right-[calc(16.66%+1.75rem)] h-0.5 border-t-2 border-dashed border-primary-300 z-0"
-              aria-hidden="true"
-            />
-            {steps.map(({ step, title, desc }) => (
+
+          {/* Steps row with arrows */}
+          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-center gap-0">
+            {/* Step 1 */}
+            <div className="flex flex-col items-center text-center max-w-xs mx-auto flex-1">
               <div
-                key={step}
-                className="flex flex-col items-center text-center relative z-10"
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-5 shadow-lg ring-4 ring-orange-100 flex-shrink-0"
+                style={{ backgroundColor: "#F97316" }}
               >
-                <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-md ring-4 ring-orange-100"
-                  style={{ backgroundColor: "#FF6B00" }}
-                >
-                  <span className="font-display font-bold text-white text-lg">
-                    {step}
-                  </span>
-                </div>
-                <h3 className="font-display font-semibold text-foreground text-lg mb-2">
-                  {title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {desc}
-                </p>
+                <span className="font-display font-bold text-white text-xl">
+                  1
+                </span>
               </div>
-            ))}
+              <h3 className="font-display font-semibold text-foreground text-xl mb-3">
+                {steps[0].title}
+              </h3>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {steps[0].desc}
+              </p>
+            </div>
+            <ArrowRight
+              className="hidden md:block w-10 h-10 flex-shrink-0 mx-2 -mt-12"
+              style={{ color: "#F97316" }}
+            />
+            {/* Step 2 */}
+            <div className="flex flex-col items-center text-center max-w-xs mx-auto flex-1">
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-5 shadow-lg ring-4 ring-orange-100 flex-shrink-0"
+                style={{ backgroundColor: "#F97316" }}
+              >
+                <span className="font-display font-bold text-white text-xl">
+                  2
+                </span>
+              </div>
+              <h3 className="font-display font-semibold text-foreground text-xl mb-3">
+                {steps[1].title}
+              </h3>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {steps[1].desc}
+              </p>
+            </div>
+            <ArrowRight
+              className="hidden md:block w-10 h-10 flex-shrink-0 mx-2 -mt-12"
+              style={{ color: "#F97316" }}
+            />
+            {/* Step 3 */}
+            <div className="flex flex-col items-center text-center max-w-xs mx-auto flex-1">
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-5 shadow-lg ring-4 ring-orange-100 flex-shrink-0"
+                style={{ backgroundColor: "#F97316" }}
+              >
+                <span className="font-display font-bold text-white text-xl">
+                  3
+                </span>
+              </div>
+              <h3 className="font-display font-semibold text-foreground text-xl mb-3">
+                {steps[2].title}
+              </h3>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {steps[2].desc}
+              </p>
+            </div>
           </div>
-          <div className="text-center mt-10">
+
+          <div className="text-center mt-12">
             <Button
               onClick={handleGetStarted}
               size="lg"
-              className="bg-primary-700 hover:bg-primary-800 text-white border-0 font-semibold gap-2"
+              className="bg-primary-700 hover:bg-primary-800 text-white border-0 font-semibold gap-2 rounded-full px-8"
               data-ocid="landing.start_matches_button"
             >
               Start Finding Matches
@@ -363,97 +474,76 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Important Notice */}
-      <section className="py-10 bg-orange-50 border-y border-orange-100">
+      {/* ── IMPORTANT NOTICE ── */}
+      <section className="py-14" style={{ backgroundColor: "#FEF9F0" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 pl-5" style={{ borderColor: "#FF6B00" }}>
-            <div className="flex items-center gap-2 mb-3">
-              <CheckCircle2
-                className="w-5 h-5 flex-shrink-0"
-                style={{ color: "#FF6B00" }}
-              />
-              <h3 className="font-display font-semibold text-foreground text-lg">
-                Important Notice
-              </h3>
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8 sm:p-10">
+            <div className="border-l-4 pl-6" style={{ borderColor: "#F97316" }}>
+              <div className="flex items-center gap-3 mb-4">
+                <CheckCircle2
+                  className="w-6 h-6 flex-shrink-0"
+                  style={{ color: "#F97316" }}
+                />
+                <h3 className="font-display font-bold text-foreground text-xl">
+                  Important Notice
+                </h3>
+              </div>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                RailMutual Connect is an independent platform that{" "}
+                <strong>only facilitates connections</strong> between Indian
+                Railways employees seeking mutual transfers. This platform does
+                not process, approve, or guarantee any official transfer. All
+                official transfer procedures are governed by{" "}
+                <strong>Indian Railways rules and regulations</strong>.
+              </p>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-2xl">
-              RailMutual Connect is an independent platform that{" "}
-              <strong>only facilitates connections</strong> between Indian
-              Railways employees seeking mutual transfers. This platform does
-              not process, approve, or guarantee any official transfer. All
-              official transfer procedures are governed by{" "}
-              <strong>Indian Railways rules and regulations</strong>.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-primary-800 text-white/60 py-10">
+      {/* ── FOOTER ── */}
+      <footer
+        className="py-12 text-white/60"
+        style={{ backgroundColor: "#0B2C4A" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+            {/* Left: logo + tagline + email */}
             <div className="flex flex-col gap-2">
-              {/* Footer logo — icon + coded text matching primary branding */}
-              <div className="flex items-center gap-2.5">
-                <img
-                  src="/assets/generated/icon-transparent.dim_512x512.png"
-                  alt="RailMutual Connect"
-                  className="h-9 w-9 object-contain opacity-90"
-                />
+              <div className="flex items-center gap-3">
+                <div className="w-[40px] h-[40px] rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+                  <img
+                    src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
+                    alt="RailMutual Connect"
+                    className="w-[30px] h-[30px] object-contain"
+                  />
+                </div>
                 <div className="flex flex-col leading-none">
                   <span className="font-display font-extrabold text-white text-base tracking-tight leading-none">
-                    RailMutual&nbsp;
-                    <span style={{ color: "#FF6B00" }}>Connect</span>
-                  </span>
-                  <span className="text-white/50 text-[10px] font-medium tracking-wide mt-0.5">
-                    Mutual Transfers Made Easy
+                    RailMutual <span style={{ color: "#F97316" }}>Connect</span>
                   </span>
                 </div>
               </div>
+              <p className="text-white/50 text-sm mt-1">
+                Mutual Transfers Made Easy
+              </p>
               <a
                 href="mailto:railmutualconnect@gmail.com"
-                className="text-white/50 hover:text-[#FF6B00] text-xs transition-colors block"
+                className="text-white/50 hover:text-[#F97316] text-sm transition-colors mt-0.5"
               >
                 railmutualconnect@gmail.com
               </a>
             </div>
-            <div className="text-center sm:text-right text-xs space-y-1">
+
+            {/* Right: legal text + copyright */}
+            <div className="text-right text-white/50 text-xs space-y-1.5">
               <p>
                 This platform only facilitates connections between employees.
               </p>
-              <p>
-                Official transfers are governed by Indian Railways rules and
-                regulations.
-              </p>
-              <p className="mt-2">
-                © {new Date().getFullYear()} ·{" "}
-                <span className="text-white/40">
-                  For assistance:{" "}
-                  <a
-                    href="mailto:railmutualconnect@gmail.com"
-                    className="transition-colors"
-                    style={{ color: "#FF6B00" }}
-                  >
-                    railmutualconnect@gmail.com
-                  </a>
-                </span>
-              </p>
-              <p>
-                Built with{" "}
-                <Heart
-                  className="inline w-3 h-3"
-                  style={{ color: "#FF6B00" }}
-                />{" "}
-                using{" "}
-                <a
-                  href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || "railmutual-connect")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors"
-                  style={{ color: "#FF6B00" }}
-                >
-                  caffeine.ai
-                </a>
+              <p>Official transfers are governed by Indian Railways rules.</p>
+              <p className="mt-2 text-white/40">
+                © {new Date().getFullYear()} RailMutual Connect ·{" "}
+                railmutualconnect@gmail.com
               </p>
             </div>
           </div>

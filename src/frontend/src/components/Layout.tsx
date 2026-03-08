@@ -50,14 +50,14 @@ export default function Layout({ children }: LayoutProps) {
             {/* Logo — icon + coded text matching primary branding */}
             <Link to="/dashboard" className="flex items-center gap-2.5 group">
               <img
-                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                src="/assets/generated/icon-transparent.dim_512x512.png"
                 alt="RailMutual Connect icon"
                 className="h-9 w-9 object-contain"
               />
               <div className="flex flex-col leading-none">
                 <span className="font-display font-extrabold text-white text-base tracking-tight leading-none">
                   RailMutual&nbsp;
-                  <span className="text-[#FF941C]">Connect</span>
+                  <span style={{ color: "#FF6B00" }}>Connect</span>
                 </span>
                 <span className="text-white/55 text-[10px] font-medium tracking-wide mt-0.5 hidden sm:block">
                   Mutual Transfers Made Easy
@@ -182,7 +182,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
               <img
-                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                src="/assets/generated/icon-transparent.dim_512x512.png"
                 alt=""
                 className="w-4 h-4 object-contain opacity-80"
               />

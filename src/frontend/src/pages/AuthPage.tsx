@@ -90,9 +90,9 @@ export default function AuthPage() {
       {/* Header */}
       <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center gap-3 shadow-md">
         <img
-          src="/assets/generated/logo-icon-only.dim_200x200.png"
+          src="/assets/generated/icon-transparent.dim_512x512.png"
           alt="RailMutual Connect"
-          className="h-10 w-10 rounded-lg object-contain bg-white/10 p-1"
+          className="h-10 w-10 object-contain"
         />
         <img
           src="/assets/generated/logo-primary.dim_800x300.png"
@@ -116,7 +116,7 @@ export default function AuthPage() {
           <div className="text-center space-y-3">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/10 mb-2">
               <img
-                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                src="/assets/generated/icon-transparent.dim_512x512.png"
                 alt="RailMutual Connect"
                 className="w-14 h-14 object-contain"
               />

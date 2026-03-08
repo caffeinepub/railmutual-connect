@@ -81,110 +81,137 @@ export default function LandingPage() {
       {/* Header */}
       <header className="bg-primary-700 shadow-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2.5">
-              {/* Icon only */}
+          <div className="flex items-center justify-between h-16 gap-2">
+            {/* Logo — shrinks gracefully on mobile */}
+            <div className="flex items-center gap-2 min-w-0 flex-shrink">
               <img
-                src="/assets/generated/logo-icon-only.dim_200x200.png"
+                src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
                 alt="RailMutual Connect icon"
-                className="h-9 w-9 object-contain"
+                className="h-9 w-9 object-contain flex-shrink-0 rounded-md bg-white p-0.5"
               />
-              {/* Text built in code — same layout as primary branding logo */}
-              <div className="flex flex-col leading-none">
-                <span className="font-display font-extrabold text-white text-lg tracking-tight leading-none">
+              <div className="flex flex-col leading-none min-w-0">
+                <span className="font-display font-extrabold text-white text-base sm:text-lg tracking-tight leading-none whitespace-nowrap">
                   RailMutual&nbsp;
-                  <span className="text-[#FF941C]">Connect</span>
+                  <span style={{ color: "#FF6B00" }}>Connect</span>
                 </span>
                 <span className="text-white/55 text-[10px] font-medium tracking-wide mt-0.5 hidden sm:block">
                   Mutual Transfers Made Easy
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Link
-                to="/admin-login"
-                data-ocid="landing.admin_login_link"
-                className="flex items-center gap-1 text-xs text-white/60 hover:text-white transition-colors px-2 py-1 border border-white/20 rounded-md"
-              >
-                <Shield className="w-3 h-3" />
-                Admin
+
+            {/* Header action buttons — two distinct orange buttons */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <Link to="/admin-login" data-ocid="landing.admin_login_button">
+                <Button
+                  size="sm"
+                  className="bg-[#FF6B00] hover:bg-[#E05E00] text-white border-0 font-medium text-xs px-2.5 sm:px-3 gap-1"
+                >
+                  <Shield className="w-3 h-3 flex-shrink-0" />
+                  <span>Admin</span>
+                </Button>
               </Link>
               <Button
                 onClick={handleGetStarted}
-                className="bg-orange-500 hover:bg-orange-600 text-white border-0 font-medium"
                 size="sm"
+                className="bg-[#FF6B00] hover:bg-[#E05E00] text-white font-medium text-xs px-2.5 sm:px-3 border border-white/30"
                 data-ocid="landing.header_login_button"
               >
-                {identity ? "Go to Dashboard" : "Login / Register"}
+                {identity ? "Dashboard" : "Login"}
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      {/* Hero Section — white background with subtle railway tracks background */}
+      <section className="relative overflow-hidden bg-white border-b border-gray-100">
+        {/* Railway background image — very subtle, low opacity */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0"
           style={{
             backgroundImage:
-              "url('/assets/generated/hero-banner.dim_1440x400.png')",
+              "url('/assets/generated/hero-railway-bg.dim_1600x900.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.07,
           }}
         />
-        <div className="absolute inset-0 hero-overlay" />
-
-        {/* Animated Train */}
+        {/* Subtle grid pattern layered on top for additional depth */}
         <div
-          className="absolute bottom-6 left-0 w-full pointer-events-none z-10 animate-train-slide"
-          aria-hidden="true"
-          style={{ willChange: "transform" }}
-        >
-          <div className="flex items-center gap-1 opacity-20">
-            <Train className="w-8 h-8 text-orange-300" />
-            <div className="h-0.5 w-16 bg-orange-300/60 rounded" />
-            <div className="h-0.5 w-8 bg-orange-300/40 rounded" />
-            <div className="h-0.5 w-12 bg-orange-300/20 rounded" />
-          </div>
-        </div>
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#1a3a6b 1px, transparent 1px), linear-gradient(90deg, #1a3a6b 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-36">
-          <div className="max-w-2xl">
-            {/* Hero logo — icon + stacked text matching brand sample */}
-            <div className="flex items-center gap-4 mb-8">
-              <img
-                src="/assets/generated/logo-icon-only.dim_200x200.png"
-                alt="RailMutual Connect icon"
-                className="h-20 sm:h-24 w-auto object-contain drop-shadow-lg"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" }}
-              />
-              <div className="flex flex-col leading-tight">
-                <span className="font-display font-extrabold text-white text-4xl sm:text-5xl tracking-tight leading-none">
-                  RailMutual
-                </span>
-                <span className="font-display font-extrabold text-[#FF941C] text-4xl sm:text-5xl tracking-tight leading-none">
-                  Connect
-                </span>
-                <span className="text-white/65 text-sm sm:text-base font-medium tracking-wide mt-2">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="max-w-3xl">
+            {/* Hero logo — icon vertically spans from top of "RailMutual" to bottom of tagline */}
+            <div className="flex items-stretch gap-5 mb-8">
+              {/* Icon: self-stretch so it spans full height of the text block (both lines + tagline) */}
+              <div className="flex items-center flex-shrink-0">
+                <img
+                  src="/assets/uploads/file_0000000092387208b8901a7316cfe37e-4-1.png"
+                  alt="RailMutual Connect icon"
+                  className="w-auto object-contain"
+                  style={{
+                    height: "clamp(7rem, 14vw, 10.5rem)",
+                    imageRendering: "auto",
+                  }}
+                />
+              </div>
+              <div className="flex flex-col leading-tight justify-between py-0.5">
+                <div>
+                  <span
+                    className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight leading-none block"
+                    style={{ color: "#1a3a6b" }}
+                  >
+                    RailMutual
+                  </span>
+                  <span
+                    className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight leading-none block"
+                    style={{ color: "#FF6B00" }}
+                  >
+                    Connect
+                  </span>
+                </div>
+                <span
+                  className="text-sm sm:text-base font-medium tracking-wide mt-auto pt-2"
+                  style={{ color: "#555" }}
+                >
                   Mutual Transfers Made Easy
                 </span>
               </div>
             </div>
 
-            <h1 className="font-display font-bold text-white text-3xl sm:text-4xl lg:text-5xl leading-tight mb-4">
+            <h1
+              className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight mb-4"
+              style={{ color: "#1a3a6b" }}
+            >
               Find Your Perfect{" "}
-              <span className="text-orange-400">Mutual Transfer</span> Partner
+              <span style={{ color: "#FF6B00" }}>Mutual Transfer</span> Partner
             </h1>
-            <p className="text-white/80 text-base sm:text-lg mb-8 leading-relaxed">
-              A dedicated platform for Indian Railways employees to discover
-              mutual transfer opportunities. Connect with colleagues who want to
-              swap postings — fast, simple, and secure.
-            </p>
+            <div className="mb-8 max-w-xl">
+              <p
+                className="text-base sm:text-lg leading-relaxed"
+                style={{ color: "#555" }}
+              >
+                A dedicated platform for Indian Railways employees to discover
+                mutual transfer opportunities. Connect with colleagues who want
+                to swap postings — fast, simple, and secure.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="btn-shimmer animate-shimmer text-white border-0 font-semibold text-base px-8 gap-2 animate-pulse-soft shadow-lg"
+                className="text-white border-0 font-semibold text-base px-8 gap-2 shadow-md"
+                style={{ backgroundColor: "#FF6B00" }}
                 data-ocid="landing.hero_cta_button"
               >
                 {identity ? "Go to Dashboard" : "Get Started Free"}
@@ -198,7 +225,8 @@ export default function LandingPage() {
                     .getElementById("how-it-works")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="border-white/40 text-white hover:bg-white/10 hover:text-white font-medium text-base"
+                className="font-medium text-base"
+                style={{ borderColor: "#1a3a6b", color: "#1a3a6b" }}
                 data-ocid="landing.how_it_works_button"
               >
                 How It Works
@@ -207,16 +235,35 @@ export default function LandingPage() {
 
             {/* Trust badges */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span className="flex items-center gap-1.5 text-white/70 text-xs bg-white/10 rounded-full px-3 py-1">
-                <Lock className="w-3 h-3 text-orange-300" />
+              <span
+                className="flex items-center gap-1.5 text-xs rounded-full px-3 py-1 border"
+                style={{
+                  color: "#1a3a6b",
+                  borderColor: "#1a3a6b30",
+                  backgroundColor: "#1a3a6b08",
+                }}
+              >
+                <Lock className="w-3 h-3" style={{ color: "#FF6B00" }} />
                 Secure
               </span>
-              <span className="text-white/30 text-xs hidden sm:inline">•</span>
-              <span className="text-white/70 text-xs bg-white/10 rounded-full px-3 py-1">
+              <span
+                className="text-xs rounded-full px-3 py-1 border"
+                style={{
+                  color: "#1a3a6b",
+                  borderColor: "#1a3a6b30",
+                  backgroundColor: "#1a3a6b08",
+                }}
+              >
                 Free to Use
               </span>
-              <span className="text-white/30 text-xs hidden sm:inline">•</span>
-              <span className="text-white/70 text-xs bg-white/10 rounded-full px-3 py-1">
+              <span
+                className="text-xs rounded-full px-3 py-1 border"
+                style={{
+                  color: "#1a3a6b",
+                  borderColor: "#1a3a6b30",
+                  backgroundColor: "#1a3a6b08",
+                }}
+              >
                 Indian Railways Only
               </span>
             </div>
@@ -225,7 +272,10 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="bg-primary-600 py-6 border-b-2 border-orange-500">
+      <section
+        className="bg-primary-600 py-6 border-b-2"
+        style={{ borderColor: "#FF6B00" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {stats.map(({ value, label }, idx) => (
@@ -233,7 +283,10 @@ export default function LandingPage() {
                 key={label}
                 className={`text-center py-2 ${idx < stats.length - 1 ? "sm:border-r sm:border-white/20" : ""}`}
               >
-                <div className="font-display font-bold text-orange-400 text-2xl sm:text-3xl">
+                <div
+                  className="font-display font-bold text-2xl sm:text-3xl"
+                  style={{ color: "#FF6B00" }}
+                >
                   {value}
                 </div>
                 <div className="text-white/70 text-xs sm:text-sm mt-0.5">
@@ -300,7 +353,10 @@ export default function LandingPage() {
                 key={step}
                 className="flex flex-col items-center text-center relative z-10"
               >
-                <div className="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center mb-4 shadow-md ring-4 ring-orange-100">
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-md ring-4 ring-orange-100"
+                  style={{ backgroundColor: "#FF6B00" }}
+                >
                   <span className="font-display font-bold text-white text-lg">
                     {step}
                   </span>
@@ -331,9 +387,12 @@ export default function LandingPage() {
       {/* Important Notice */}
       <section className="py-10 bg-orange-50 border-y border-orange-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-l-4 border-orange-500 pl-5">
+          <div className="border-l-4 pl-5" style={{ borderColor: "#FF6B00" }}>
             <div className="flex items-center gap-2 mb-3">
-              <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0" />
+              <CheckCircle2
+                className="w-5 h-5 flex-shrink-0"
+                style={{ color: "#FF6B00" }}
+              />
               <h3 className="font-display font-semibold text-foreground text-lg">
                 Important Notice
               </h3>
@@ -358,14 +417,14 @@ export default function LandingPage() {
               {/* Footer logo — icon + coded text matching primary branding */}
               <div className="flex items-center gap-2.5">
                 <img
-                  src="/assets/generated/logo-icon-only.dim_200x200.png"
+                  src="/assets/generated/icon-transparent.dim_512x512.png"
                   alt="RailMutual Connect"
                   className="h-9 w-9 object-contain opacity-90"
                 />
                 <div className="flex flex-col leading-none">
                   <span className="font-display font-extrabold text-white text-base tracking-tight leading-none">
                     RailMutual&nbsp;
-                    <span className="text-[#FF941C]">Connect</span>
+                    <span style={{ color: "#FF6B00" }}>Connect</span>
                   </span>
                   <span className="text-white/50 text-[10px] font-medium tracking-wide mt-0.5">
                     Mutual Transfers Made Easy
@@ -374,7 +433,7 @@ export default function LandingPage() {
               </div>
               <a
                 href="mailto:railmutualconnect@gmail.com"
-                className="text-white/50 hover:text-orange-400 text-xs transition-colors block"
+                className="text-white/50 hover:text-[#FF6B00] text-xs transition-colors block"
               >
                 railmutualconnect@gmail.com
               </a>
@@ -393,7 +452,8 @@ export default function LandingPage() {
                   For assistance:{" "}
                   <a
                     href="mailto:railmutualconnect@gmail.com"
-                    className="text-orange-400 hover:text-orange-300 transition-colors"
+                    className="transition-colors"
+                    style={{ color: "#FF6B00" }}
                   >
                     railmutualconnect@gmail.com
                   </a>
@@ -408,13 +468,18 @@ export default function LandingPage() {
                 </Link>
               </p>
               <p>
-                Built with <Heart className="inline w-3 h-3 text-orange-400" />{" "}
+                Built with{" "}
+                <Heart
+                  className="inline w-3 h-3"
+                  style={{ color: "#FF6B00" }}
+                />{" "}
                 using{" "}
                 <a
                   href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || "railmutual-connect")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-orange-400 hover:text-orange-300 transition-colors"
+                  className="transition-colors"
+                  style={{ color: "#FF6B00" }}
                 >
                   caffeine.ai
                 </a>
